@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.service.AccountService;
 
 /**
- * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
- * found in readme.md as well as the test cases. You be required to use the @GET/POST/PUT/DELETE/etc Mapping annotations
- * where applicable as well as the @ResponseBody and @PathVariable annotations. You should
- * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
+ * TODO: You will need to write your own endpoints and handlers for your
+ * controller using Spring. The endpoints you will need can be
+ * found in readme.md as well as the test cases. You be required to use
+ * the @GET/POST/PUT/DELETE/etc Mapping annotations
+ * where applicable as well as the @ResponseBody and @PathVariable annotations.
+ * You should
+ * refer to prior mini-project labs and lecture materials for guidance on how a
+ * controller may be built.
  */
 @RestController
 public class SocialMediaController {
@@ -33,7 +37,7 @@ public class SocialMediaController {
      * @return ResponseEntity corresponding to returning object or other message
      */
     @PostMapping("/register")
-    public ResponseEntity<?> registerAccount(@RequestBody Account account){
+    public ResponseEntity<?> registerAccount(@RequestBody Account account) {
 
         // try-catch for error handling
         try {
@@ -43,10 +47,27 @@ public class SocialMediaController {
         } catch (AccountExistsException e) {
             // account already exists
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch(BadArgumentsException e){
-            // illegal arguments   
+        } catch (BadArgumentsException e) {
+            // illegal arguments
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } 
+        }
+    }
+
+    /**
+     * endpoint to verify login
+     * 
+     * @param account
+     * @return ResponseEntity containing object or unathorized http status
+     */
+    @PostMapping("/login")
+    public ResponseEntity<Account> verifyLogin(@RequestBody Account account){
+        Account returningAccount = accountService.verifyAccount(account);
+
+        if (returningAccount != null){
+            return ResponseEntity.status(HttpStatus.OK).body(returningAccount);
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
     }
 }

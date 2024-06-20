@@ -51,4 +51,26 @@ public class AccountService {
     }
 
 
+    /**
+     * function to verify is user can log in based on requirements
+     * 
+     * account EXISTS
+     * passwords MATCH
+     * 
+     * @param account
+     * @return Account object or null
+     */
+    public Account verifyAccount(Account account) {
+        // querying user
+        Account checkingAccount = accountRepository.findByUsername(account.getUsername());
+
+        // checking if requirements are met, if so return object
+        if (checkingAccount != null && checkingAccount.getPassword().equals(account.getPassword())){
+            return checkingAccount;
+        }
+
+        return null;
+    }
+
+
 }
