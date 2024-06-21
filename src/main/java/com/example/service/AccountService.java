@@ -1,5 +1,6 @@
 package com.example.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Account;
@@ -18,6 +19,7 @@ public class AccountService {
      * 
      * @param accountRepository
      */
+    @Autowired
     public AccountService(AccountRepository accountRepository){
         this.accountRepository = accountRepository;
     }
