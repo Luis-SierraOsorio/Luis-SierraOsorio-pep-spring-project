@@ -9,4 +9,8 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     // custom query to find user by username
     Account findByUsername(String username);
+
+    // custom query to find user by id
+    // could have done this in the messageRepository using a custom query but this was faster and easier
+    Account findByAccountId(Integer account_id);
 }

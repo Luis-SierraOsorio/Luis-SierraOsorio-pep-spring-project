@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.exception.AccountExistsException;
 import com.example.exception.BadArgumentsException;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.AccountService;
+import com.example.service.MessageService;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your
@@ -29,6 +31,9 @@ public class SocialMediaController {
     // I want to keep this file as small as possible so Autowire it is for injection
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private MessageService messageService;
 
     /**
      * endpoint to register account
@@ -69,5 +74,24 @@ public class SocialMediaController {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
+    }
+
+    /**
+     * endpoint to post new messages
+     * 
+     * @param message
+     * @return 
+     */
+    @PostMapping("/messages")
+    public ResponseEntity<Message> postMessage(@RequestBody Message message){
+        Message returningAccount = messageService.postMessage(message);
+
+        // if nul we return a 400 status code
+        if (returningAccount == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        // return in the body the account found
+        return ResponseEntity.ok().body(returningAccount);
     }
 }
