@@ -70,13 +70,53 @@ public class MessageService {
      */
     public Integer deleteMessageById(Integer messageId) {
 
-        // code checks if the message existed, if so, returns 1 since only 1 row is updated, else returns null
+        // code checks if the message existed, if so, returns 1 since only 1 row is
+        // updated, else returns null
         if (messageRepository.findByMessageId(messageId) != null) {
             messageRepository.deleteById(messageId);
             return 1;
         } else {
             return null;
         }
+    }
+
+    /**
+     * method to update a message given its id with given requirements
+     * 
+     * messageId ALREADY exists
+     * messageText is NOT blank
+     * messageText length is NOT over 255
+     * 
+     * @param messageId
+     * @param messageText
+     * @return
+     */
+    public Integer updateMessageById(Integer messageId, Message newMessage) {
+
+        // getting message if it exists
+        Message message = messageRepository.findByMessageId(messageId);
+
+        // checking conditions, returning null if not satisfied
+        if (message == null || newMessage.getMessageText().isBlank() || newMessage.getMessageText().length() > 255) {
+            return null;
+        }
+
+        // changing the text field and then updating the message
+        message.setMessageText(newMessage.getMessageText());
+        messageRepository.save(message);
+        return 1;
+
+    }
+
+    /**
+     * method to get all the messages based on a user id
+     * 
+     * @param accountId
+     * @return
+     */
+    public List<Message> getMessagesByUserId(Integer accountId){
+        List<Message> allMessages = messageRepository.findByPostedBy(accountId);
+        return allMessages;
     }
 
 }

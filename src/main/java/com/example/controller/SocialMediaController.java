@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -143,5 +144,40 @@ public class SocialMediaController {
         } else {
             return ResponseEntity.ok().build();
         }
+    }
+
+    /**
+     * endpoint to handle the updating of a message by its id
+     * 
+     * @param messageId
+     * @param message
+     * @return
+     */
+    @PatchMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> updateMessageById(@PathVariable Integer messageId, @RequestBody Message message) {
+        // number of rows updated
+        Integer returningNumberOfRows = messageService.updateMessageById(messageId, message);
+
+        // checking to see what responseentity to return
+        if (returningNumberOfRows == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } else {
+            return ResponseEntity.ok().body(returningNumberOfRows);
+        }
+    }
+
+    /**
+     * endpoint to handle the getting of all messages based on a user's id
+     * 
+     * @param accountId
+     * @return
+     */
+    @GetMapping("/accounts/{accountId}/messages")
+    public ResponseEntity<List<Message>> getAllMessagesById(@PathVariable Integer accountId){
+
+        List<Message> allMessages = messageService.getMessagesByUserId(accountId);
+
+        return ResponseEntity.ok().body(allMessages);
+
     }
 }
