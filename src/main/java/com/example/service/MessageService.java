@@ -12,16 +12,11 @@ import java.util.List;
 @Service
 public class MessageService {
 
+    @Autowired
     MessageRepository messageRepository;
-    AccountRepository accountRepository;
 
     @Autowired
-    public MessageService(MessageRepository messageRepository, AccountRepository accountRepository){
-
-        this.messageRepository = messageRepository;
-        this.accountRepository = accountRepository;
-
-    }
+    AccountRepository accountRepository;
 
     /**
      * function to post a new message depending on requirements

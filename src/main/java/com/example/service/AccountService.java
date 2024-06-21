@@ -11,18 +11,8 @@ import com.example.repository.AccountRepository;
 @Service
 public class AccountService {
 
-    // service, not using @Autowired because I like the constructor injector more.
-    AccountRepository accountRepository;
-
-    /**
-     * Constructor class to inject service
-     * 
-     * @param accountRepository
-     */
     @Autowired
-    public AccountService(AccountRepository accountRepository){
-        this.accountRepository = accountRepository;
-    }
+    AccountRepository accountRepository;
 
     /**
      * function to register account based on required requirements
