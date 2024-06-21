@@ -8,9 +8,13 @@ import com.example.exception.BadArgumentsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 import com.example.service.AccountService;
 import com.example.service.MessageService;
@@ -93,5 +97,32 @@ public class SocialMediaController {
 
         // return in the body the account found
         return ResponseEntity.ok().body(returningAccount);
+    }
+
+    /**
+     * endpoint to handle the retrieval of all existing messages
+     * 
+     * @return
+     */
+    @GetMapping("/messages")
+    public ResponseEntity<List<Message>> retrieveAllMessages(){
+        List<Message> returningMessages = messageService.getAllMessages();
+
+        return ResponseEntity.ok().body(returningMessages);
+    }
+
+    /**
+     * endpoint to retrive a message by its id
+     * 
+     * @param messageId
+     * @return
+     */
+    @GetMapping("messages/{messageId}")
+    public ResponseEntity<Message> findMessage(@PathVariable Integer messageId){
+
+        Message returningMessage = messageService.getMessageById(messageId);
+
+        return ResponseEntity.ok().body(returningMessage);
+
     }
 }

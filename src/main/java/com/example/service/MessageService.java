@@ -7,6 +7,7 @@ import com.example.entity.Message;
 import com.example.entity.Account;
 import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
+import java.util.List;
 
 @Service
 public class MessageService {
@@ -41,6 +42,24 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
+    /**
+     * function to get all the existing messages
+     * 
+     * @return
+     */
+    public List<Message> getAllMessages(){
+        List<Message> allMessages = messageRepository.findAll();
+        return allMessages;
+    }
 
+    /**
+     * function to get a message by a given id
+     * 
+     * @param messageId
+     * @return
+     */
+    public Message getMessageById(Integer messageId){
+        return messageRepository.findByMessageId(messageId);
+    }
 
 }
