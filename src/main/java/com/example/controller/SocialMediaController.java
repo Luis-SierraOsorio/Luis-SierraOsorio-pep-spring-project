@@ -8,6 +8,7 @@ import com.example.exception.BadArgumentsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,10 +70,10 @@ public class SocialMediaController {
      * @return ResponseEntity containing object or unathorized http status
      */
     @PostMapping("/login")
-    public ResponseEntity<Account> verifyLogin(@RequestBody Account account){
+    public ResponseEntity<Account> verifyLogin(@RequestBody Account account) {
         Account returningAccount = accountService.verifyAccount(account);
 
-        if (returningAccount != null){
+        if (returningAccount != null) {
             return ResponseEntity.status(HttpStatus.OK).body(returningAccount);
         }
 
@@ -84,14 +85,14 @@ public class SocialMediaController {
      * endpoint to post new messages
      * 
      * @param message
-     * @return 
+     * @return
      */
     @PostMapping("/messages")
-    public ResponseEntity<Message> postMessage(@RequestBody Message message){
+    public ResponseEntity<Message> postMessage(@RequestBody Message message) {
         Message returningAccount = messageService.postMessage(message);
 
         // if nul we return a 400 status code
-        if (returningAccount == null){
+        if (returningAccount == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
@@ -105,7 +106,7 @@ public class SocialMediaController {
      * @return
      */
     @GetMapping("/messages")
-    public ResponseEntity<List<Message>> retrieveAllMessages(){
+    public ResponseEntity<List<Message>> retrieveAllMessages() {
         List<Message> returningMessages = messageService.getAllMessages();
 
         return ResponseEntity.ok().body(returningMessages);
@@ -117,12 +118,30 @@ public class SocialMediaController {
      * @param messageId
      * @return
      */
-    @GetMapping("messages/{messageId}")
-    public ResponseEntity<Message> findMessage(@PathVariable Integer messageId){
+    @GetMapping("/messages/{messageId}")
+    public ResponseEntity<Message> findMessage(@PathVariable Integer messageId) {
 
         Message returningMessage = messageService.getMessageById(messageId);
 
         return ResponseEntity.ok().body(returningMessage);
 
+    }
+
+    /**
+     * endpoint to delete a message by the id provided in the path
+     * 
+     * @param messageId
+     * @return
+     */
+    @DeleteMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> deleteMessage(@PathVariable Integer messageId) {
+        Integer returningRowsNumberUpdated = messageService.deleteMessageById(messageId);
+
+        // returning no body or number of rows
+        if (returningRowsNumberUpdated != null) {
+            return ResponseEntity.ok().body(returningRowsNumberUpdated);
+        } else {
+            return ResponseEntity.ok().build();
+        }
     }
 }

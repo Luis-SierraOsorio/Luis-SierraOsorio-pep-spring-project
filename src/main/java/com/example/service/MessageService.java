@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class MessageService {
-    
+
     @Autowired
     MessageRepository messageRepository;
 
@@ -29,12 +29,12 @@ public class MessageService {
      * @param message
      * @return Message object or null depending if message is posted or not
      */
-    public Message postMessage(Message message){
+    public Message postMessage(Message message) {
 
         // this code checks the conditions required
         if (message.getMessageText().length() > 255 ||
-         message.getMessageText().isBlank() ||
-         accountRepository.findByAccountId(message.getPostedBy()) == null){
+                message.getMessageText().isBlank() ||
+                accountRepository.findByAccountId(message.getPostedBy()) == null) {
             return null;
         }
 
@@ -47,7 +47,7 @@ public class MessageService {
      * 
      * @return
      */
-    public List<Message> getAllMessages(){
+    public List<Message> getAllMessages() {
         List<Message> allMessages = messageRepository.findAll();
         return allMessages;
     }
@@ -58,8 +58,25 @@ public class MessageService {
      * @param messageId
      * @return
      */
-    public Message getMessageById(Integer messageId){
+    public Message getMessageById(Integer messageId) {
         return messageRepository.findByMessageId(messageId);
+    }
+
+    /**
+     * function to delete a message by the given id
+     * 
+     * @param messageId
+     * @return
+     */
+    public Integer deleteMessageById(Integer messageId) {
+
+        // code checks if the message existed, if so, returns 1 since only 1 row is updated, else returns null
+        if (messageRepository.findByMessageId(messageId) != null) {
+            messageRepository.deleteById(messageId);
+            return 1;
+        } else {
+            return null;
+        }
     }
 
 }
